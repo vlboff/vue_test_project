@@ -41,7 +41,15 @@
     "parserOptions": {
       "ecmaVersion": 2020
     },
-    "rules": {}
+    "rules": {
+      "quotes": [
+        2,
+        "double",
+        {
+          "avoidEscape": true
+        }
+      ]
+    }
   },
   "browserslist": [
     "> 1%",
