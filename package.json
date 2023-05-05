@@ -9,6 +9,8 @@
   },
   "dependencies": {
     "core-js": "^3.8.3",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-prettier": "^4.2.1",
     "vue": "^3.2.13",
     "vue-router": "^4.0.3"
   },
@@ -47,6 +49,17 @@
         "double",
         {
           "avoidEscape": true
+        }
+      ],
+      "max-len": [
+        "error",
+        {
+          "code": 100,
+          "tabWidth": 2,
+          "ignoreUrls": true,
+          "ignoreStrings": true,
+          "ignoreTemplateLiterals": true,
+          "ignoreRegExpLiterals": true
         }
       ]
     }
