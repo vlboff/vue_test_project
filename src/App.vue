@@ -1,29 +1,46 @@
 <template>
   <main>
-    <div class="post" v-for="post in posts" v-bind:key="post.id">
-      <h3>{{ post.title }}</h3>
-      <p>
-        {{ post.body }}
-      </p>
-    </div>
+    <PostForm @create="createPost"/>
+    <PostsList :posts="posts"/>
   </main>
 </template>
 
 <script>
 import { defineComponent } from "vue";
-
-const makeRequest = async () => fetch("https://dummyjson.com/posts")
-  .then((res) => res.json()).then((res) => res.posts);
+import PostForm from "@/components/PostForm.vue";
+import PostsList from "@/components/PostsList.vue";
+import getPostsBody from "@/API/getPostsBody";
+import { getPostsImages } from "@/API/getPostsImages";
 
 export default defineComponent({
+  components: {
+    PostForm,
+    PostsList,
+  },
   data() {
     return {
       posts: [],
     };
   },
+  methods: {
+    createPost(post) {
+      this.posts.push(post);
+    },
+  },
   async mounted() {
-    const getPosts = await makeRequest();
-    this.posts = getPosts;
+    const getPosts = await getPostsBody();
+    const getImages = await getPostsImages();
+
+    const concatArr = (firstArr, secondArr) => {
+      const mainArr = [...firstArr];
+      const imgArr = [...secondArr.photos];
+      for (let i = 0; i < mainArr.length; i += 1) {
+        mainArr[i].url = imgArr[i].src.large;
+      }
+      return mainArr;
+    };
+
+    this.posts = concatArr(getPosts, getImages);
   },
 });
 </script>
@@ -33,17 +50,5 @@ export default defineComponent({
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-}
-
-main {
-  padding: 20px;
-  display: grid;
-  gap: 50px;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-}
-
-.post {
-  padding: 15px;
-  border: 2px solid green;
 }
 </style>
