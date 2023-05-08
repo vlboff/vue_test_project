@@ -18,14 +18,13 @@
             placeholder="Title"
             id="title">
         </label>
-        <label for="body">
-          <input
-            v-model="post.body"
-            class="create-post_input"
-            type="text"
-            placeholder="Text"
-            id="body">
-        </label>
+        <textarea
+          name="text"
+          class="create-post_textarea"
+          rows="10"
+          v-model="post.body"
+          placeholder="Text">
+        </textarea>
         <button @click="createPost">Send post</button>
       </form>
     </div>
@@ -73,5 +72,9 @@ export default defineComponent({
 .create-post_input {
   display: block;
   width: 100%;
+}
+
+.create-post_textarea {
+  resize: none;
 }
 </style>

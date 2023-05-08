@@ -1,7 +1,9 @@
 <template>
   <main>
-    <PostForm @create="createPost"/>
-    <PostsList :posts="posts"/>
+    <ModalWindow v-model:show="modelVisible">
+      <PostForm @create="createPost"/>
+    </ModalWindow>
+    <PostsList :posts="posts" :openModal="showModal"/>
   </main>
 </template>
 
@@ -9,22 +11,28 @@
 import { defineComponent } from "vue";
 import PostForm from "@/components/PostForm.vue";
 import PostsList from "@/components/PostsList.vue";
+import ModalWindow from "@/components/ModalWindow.vue";
 import getPostsBody from "@/API/getPostsBody";
 import { getPostsImages } from "@/API/getPostsImages";
 
 export default defineComponent({
   components: {
+    ModalWindow,
     PostForm,
     PostsList,
   },
   data() {
     return {
       posts: [],
+      modelVisible: false,
     };
   },
   methods: {
     createPost(post) {
       this.posts.push(post);
+    },
+    showModal() {
+      this.modelVisible = true;
     },
   },
   async mounted() {
@@ -50,5 +58,9 @@ export default defineComponent({
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+main {
+  padding: 20px;
 }
 </style>
