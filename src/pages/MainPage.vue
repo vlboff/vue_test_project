@@ -2,14 +2,18 @@
     <ModalWindow v-model:show="modelVisible">
       <PostForm @create="createPost"/>
     </ModalWindow>
+    <ModalWindow v-model:show="postVisible">
+      <SeparatePost :postID="postID" :posts="posts"/>
+    </ModalWindow>
     <h1>POST-ITS:</h1>
-    <PostsList :posts="posts" :openModal="showModal"/>
+    <PostsList :posts="posts" :openModal="showModal" :setPostID="setPostID"/>
 </template>
 
 <script>
 import { defineComponent } from "vue";
 import PostForm from "@/components/PostForm.vue";
 import PostsList from "@/components/PostsList.vue";
+import SeparatePost from "@/components/SeparatePost.vue";
 import ModalWindow from "@/components/ModalWindow.vue";
 import getPostsBody from "@/API/getPostsBody";
 import { getPostsImages } from "@/API/getPostsImages";
@@ -19,11 +23,14 @@ export default defineComponent({
     ModalWindow,
     PostForm,
     PostsList,
+    SeparatePost,
   },
   data() {
     return {
       posts: [],
       modelVisible: false,
+      postVisible: false,
+      postID: null,
     };
   },
   methods: {
@@ -33,6 +40,10 @@ export default defineComponent({
     },
     showModal() {
       this.modelVisible = true;
+    },
+    setPostID(id) {
+      this.postVisible = true;
+      this.postID = id;
     },
   },
   async mounted() {

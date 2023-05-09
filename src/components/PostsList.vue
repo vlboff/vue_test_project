@@ -1,6 +1,11 @@
 <template>
   <div class="posts-list" v-if="posts.length > 0">
-    <PostItem v-for="post in posts" :post="post" :key="post.id"/>
+    <PostItem
+      v-for="post in posts"
+      :post="post"
+      :key="post.id"
+      :setPostID="setPostID"
+    />
   </div>
   <div class="loading" v-else>
     <h2>Loading...</h2>
@@ -22,6 +27,10 @@ export default defineComponent({
       required: true,
     },
     openModal: {
+      type: Function,
+      required: true,
+    },
+    setPostID: {
       type: Function,
       required: true,
     },

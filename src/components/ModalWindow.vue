@@ -35,6 +35,7 @@ export default defineComponent({
   right: 0;
   left: 0;
   background-color: rgba(0, 0, 0, 0.5);
+  overflow-y: auto;
 }
 
 .modal_content {
@@ -42,5 +43,6 @@ export default defineComponent({
   padding: 10px;
   background-color: white;
   min-width: 300px;
+  max-width: 640px;
 }
 </style>
