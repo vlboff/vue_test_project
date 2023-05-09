@@ -1,56 +1,24 @@
 <template>
-  <main>
-    <ModalWindow v-model:show="modelVisible">
-      <PostForm @create="createPost"/>
-    </ModalWindow>
-    <PostsList :posts="posts" :openModal="showModal"/>
-  </main>
+  <div class="app">
+    <header>
+      <NavBar/>
+    </header>
+    <main>
+      <router-view></router-view>
+    </main>
+  </div>
 </template>
 
 <script>
 import { defineComponent } from "vue";
-import PostForm from "@/components/PostForm.vue";
-import PostsList from "@/components/PostsList.vue";
-import ModalWindow from "@/components/ModalWindow.vue";
-import getPostsBody from "@/API/getPostsBody";
-import { getPostsImages } from "@/API/getPostsImages";
+import NavBar from "@/components/NavBar.vue";
 
 export default defineComponent({
   components: {
-    ModalWindow,
-    PostForm,
-    PostsList,
-  },
-  data() {
-    return {
-      posts: [],
-      modelVisible: false,
-    };
-  },
-  methods: {
-    createPost(post) {
-      this.posts.push(post);
-    },
-    showModal() {
-      this.modelVisible = true;
-    },
-  },
-  async mounted() {
-    const getPosts = await getPostsBody();
-    const getImages = await getPostsImages();
-
-    const concatArr = (firstArr, secondArr) => {
-      const mainArr = [...firstArr];
-      const imgArr = [...secondArr.photos];
-      for (let i = 0; i < mainArr.length; i += 1) {
-        mainArr[i].url = imgArr[i].src.large;
-      }
-      return mainArr;
-    };
-
-    this.posts = concatArr(getPosts, getImages);
+    NavBar,
   },
 });
+
 </script>
 
 <style>
@@ -58,6 +26,18 @@ export default defineComponent({
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  --main_red: rgb(206, 0, 10);
+  --hover_red: rgb(187, 58, 58);
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 20px;
+  height: 40px;
+  background-color: rgba(0, 0, 0, 0.2);
+  box-shadow: 2px 2px 4px gray;
 }
 
 main {

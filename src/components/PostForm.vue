@@ -19,7 +19,7 @@
             id="title">
         </label>
         <textarea
-          name="text"
+          name="textarea"
           class="create-post_textarea"
           rows="10"
           v-model="post.body"

@@ -1,14 +1,16 @@
 <template>
-  <h1>POST-ITS:</h1>
-  <div class="posts-list">
+  <div class="posts-list" v-if="posts.length > 0">
     <PostItem v-for="post in posts" :post="post" :key="post.id"/>
+  </div>
+  <div class="loading" v-else>
+    <h2>Loading...</h2>
   </div>
   <button @click="openModal">Creare post</button>
 </template>
 
 <script>
 import { defineComponent } from "vue";
-import PostItem from "./PostItem.vue";
+import PostItem from "@/components/PostItem.vue";
 
 export default defineComponent({
   components: {
@@ -28,7 +30,6 @@ export default defineComponent({
 </script>
 
 <style>
-
 .posts-list {
   padding: 20px 0;
   display: grid;
@@ -36,26 +37,7 @@ export default defineComponent({
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 }
 
-.post {
-  display: flex;
-  flex-direction: column;
-  padding: 15px;
-  border: 2px solid green;
-  gap: 10px;
-}
-
-.post_image {
-  width: 100%;
-  height: auto;
-}
-
-.post_comments {
-  color: green;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.post_comments:hover {
-  color: rgb(0, 70, 0);
+.loading {
+  padding: 20px 0;
 }
 </style>
