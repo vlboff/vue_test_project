@@ -6,7 +6,8 @@
       <SeparatePost :postID="postID" :posts="posts"/>
     </ModalWindow>
     <h1>POST-ITS:</h1>
-    <PostsList :posts="posts" :openModal="showModal" :setPostID="setPostID"/>
+    <PostsList :posts="posts" :setPostID="setPostID"/>
+    <button @click="showModal">Creare post</button>
 </template>
 
 <script>

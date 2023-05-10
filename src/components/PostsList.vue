@@ -1,5 +1,5 @@
 <template>
-  <div class="posts-list" v-if="posts.length > 0">
+  <div class="posts-list">
     <PostItem
       v-for="post in posts"
       :post="post"
@@ -7,10 +7,6 @@
       :setPostID="setPostID"
     />
   </div>
-  <div class="loading" v-else>
-    <h2>Loading...</h2>
-  </div>
-  <button @click="openModal">Creare post</button>
 </template>
 
 <script>
@@ -24,10 +20,6 @@ export default defineComponent({
   props: {
     posts: {
       type: Array,
-      required: true,
-    },
-    openModal: {
-      type: Function,
       required: true,
     },
     setPostID: {

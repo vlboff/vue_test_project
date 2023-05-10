@@ -16,16 +16,18 @@
             class="create-post_input"
             type="text"
             placeholder="Title"
-            id="title">
+            id="title"
+            required>
         </label>
         <textarea
           name="textarea"
           class="create-post_textarea"
           rows="10"
           v-model="post.body"
-          placeholder="Text">
+          placeholder="Text"
+          required>
         </textarea>
-        <button @click="createPost">Send post</button>
+        <button :disabled="!isValidForm" @click="createPost">Send post</button>
       </form>
     </div>
 </template>
@@ -42,6 +44,11 @@ export default defineComponent({
         body: "",
       },
     };
+  },
+  computed: {
+    isValidForm() {
+      return this.post.title && this.post.body;
+    },
   },
   methods: {
     createPost() {
