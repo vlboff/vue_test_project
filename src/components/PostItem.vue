@@ -9,18 +9,21 @@
 <script>
 import { defineComponent } from "vue";
 import PostContent from "@/components/PostContent.vue";
+import usePostIDStore from "@/stores/PostIDStore";
 
 export default defineComponent({
   components: {
     PostContent,
   },
+  setup() {
+    const postIDStore = usePostIDStore();
+    const setPostID = (id) => postIDStore.setPostID(id);
+
+    return { setPostID };
+  },
   props: {
     post: {
       type: Object,
-      required: true,
-    },
-    setPostID: {
-      type: Function,
       required: true,
     },
   },

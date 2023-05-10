@@ -17,6 +17,8 @@ import { defineComponent } from "vue";
 import getComments from "@/API/getComments";
 import PostContent from "@/components/PostContent.vue";
 import CommentItem from "@/components/CommentItem.vue";
+import usePostsStore from "@/stores/PostsStore";
+import usePostIDStore from "@/stores/PostIDStore";
 
 export default defineComponent({
   components: {
@@ -29,25 +31,22 @@ export default defineComponent({
       comments: [],
     };
   },
-  props: {
-    postID: {
-      type: [Number, String],
-      required: true,
-    },
-    posts: {
-      type: Array,
-      required: true,
-    },
+  setup() {
+    const postsStore = usePostsStore();
+    const postIDStore = usePostIDStore();
+    return {
+      postsStore, postIDStore,
+    };
   },
   beforeMount() {
     const getPostByID = (id, posts) => {
       const post = posts.find((item) => item.id === id);
       return post;
     };
-    this.post = getPostByID(this.postID, this.posts);
+    this.post = getPostByID(this.postIDStore.postID, this.postsStore.posts);
   },
   async mounted() {
-    const comments = await getComments(this.postID);
+    const comments = await getComments(this.postIDStore.postID);
     this.comments = comments;
   },
 });
