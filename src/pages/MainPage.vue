@@ -17,7 +17,6 @@ import PostsList from "@/components/PostsList.vue";
 import SeparatePost from "@/components/SeparatePost.vue";
 import ModalWindow from "@/components/ModalWindow.vue";
 import getPostsBody from "@/API/getPostsBody";
-import { getPostsImages } from "@/API/getPostsImages";
 
 export default defineComponent({
   components: {
@@ -48,19 +47,7 @@ export default defineComponent({
     },
   },
   async mounted() {
-    const getPosts = await getPostsBody();
-    const getImages = await getPostsImages();
-
-    const concatArr = (firstArr, secondArr) => {
-      const mainArr = [...firstArr];
-      const imgArr = [...secondArr.photos];
-      for (let i = 0; i < mainArr.length; i += 1) {
-        mainArr[i].url = imgArr[i].src.large;
-      }
-      return mainArr;
-    };
-
-    this.posts = concatArr(getPosts, getImages);
+    this.posts = await getPostsBody();
   },
 });
 </script>

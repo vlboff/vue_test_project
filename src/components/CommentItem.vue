@@ -15,7 +15,7 @@
 
 <script>
 import { defineComponent } from "vue";
-import getAvatar from "@/API/getAvatar";
+import getImage from "@/API/getImage";
 
 export default defineComponent({
   data() {
@@ -30,7 +30,7 @@ export default defineComponent({
     },
   },
   async mounted() {
-    const avatar = await getAvatar(this.comment.user.id);
+    const avatar = await getImage(this.comment.user.id);
     this.avatar = avatar;
   },
 });

@@ -1,6 +1,6 @@
 <template>
   <div class="post_content">
-    <img class="post_image" :src="post.url" alt="image" v-if="post.url">
+    <img class="post_image" :src="url" alt="image" v-if="url">
     <img class="post_image" src="https://career.astra.co.id/static/media/image_not_available1.94c0c57d.png" alt="image" v-else>
     <h3 class="post_title">{{ post.title ? post.title.trim() : "" }}</h3>
     <p class="post_body">
@@ -11,15 +11,23 @@
 
 <script>
 import { defineComponent } from "vue";
+import getImage from "@/API/getImage";
 
 export default defineComponent({
+  data() {
+    return {
+      url: "",
+    };
+  },
   props: {
     post: {
       type: Object,
       required: true,
     },
   },
-
+  async mounted() {
+    this.url = await getImage(this.post.id);
+  },
 });
 </script>
 
