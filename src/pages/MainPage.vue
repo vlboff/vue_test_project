@@ -35,7 +35,12 @@ export default defineComponent({
   },
   setup() {
     const postsStore = usePostsStore();
-    postsStore.getPosts();
+
+    if (!postsStore.loaded) {
+      postsStore.getPosts();
+      postsStore.loaded = true;
+    }
+
     const createPost = () => postsStore.createPost();
 
     const modalShowStore = useModalShowStore();

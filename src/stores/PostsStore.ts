@@ -14,6 +14,7 @@ interface IState {
   post: IPost;
   posts: object[];
   searchedPosts: object[];
+  loaded: boolean;
 }
 
 const usePostsStore = defineStore("posts", {
@@ -26,6 +27,7 @@ const usePostsStore = defineStore("posts", {
     },
     posts: [],
     searchedPosts: [],
+    loaded: false,
   }),
   actions: {
     async getPosts() {
