@@ -27,18 +27,26 @@
           placeholder="Text"
           required>
         </textarea>
-        <button :disabled="!isValidForm" @click="createPost">Send post</button>
+        <button :disabled="!isValidForm" @click="createPost(post)">Send post</button>
       </form>
     </div>
 </template>
 
 <script>
 import { defineComponent } from "vue";
+import usePostsStore from "@/stores/PostsStore";
 
 export default defineComponent({
+  setup() {
+    const postsStore = usePostsStore();
+    const createPost = (post) => postsStore.createPost(post);
+
+    return { createPost };
+  },
   data() {
     return {
       post: {
+        id: null,
         url: "",
         title: "",
         body: "",
@@ -51,15 +59,6 @@ export default defineComponent({
     },
   },
   methods: {
-    createPost() {
-      this.post.id = Date.now();
-      this.$emit("create", this.post);
-      this.post = {
-        url: "",
-        title: "",
-        body: "",
-      };
-    },
     uploadFile(event) {
       const file = event.target.files[0];
       this.post.url = URL.createObjectURL(file);

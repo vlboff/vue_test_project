@@ -25,12 +25,6 @@ export default defineComponent({
     PostContent,
     CommentItem,
   },
-  data() {
-    return {
-      post: {},
-      comments: [],
-    };
-  },
   setup() {
     const postsStore = usePostsStore();
     const postIDStore = usePostIDStore();
@@ -38,12 +32,24 @@ export default defineComponent({
       postsStore, postIDStore,
     };
   },
+  data() {
+    return {
+      post: {},
+      comments: [],
+    };
+  },
+  props: {
+    posts: {
+      type: Array,
+      required: true,
+    },
+  },
   beforeMount() {
     const getPostByID = (id, posts) => {
       const post = posts.find((item) => item.id === id);
       return post;
     };
-    this.post = getPostByID(this.postIDStore.postID, this.postsStore.posts);
+    this.post = getPostByID(this.postIDStore.postID, this.posts);
   },
   async mounted() {
     const comments = await getComments(this.postIDStore.postID);

@@ -1,7 +1,7 @@
 <template>
   <div class="posts-list">
     <PostItem
-      v-for="post in postsStore.posts"
+      v-for="post in posts"
       :post="post"
       :key="post.id"
     />
@@ -11,17 +11,16 @@
 <script>
 import { defineComponent } from "vue";
 import PostItem from "@/components/PostItem.vue";
-import usePostsStore from "@/stores/PostsStore";
 
 export default defineComponent({
   components: {
     PostItem,
   },
-  setup() {
-    const postsStore = usePostsStore();
-    return {
-      postsStore,
-    };
+  props: {
+    posts: {
+      type: Array,
+      required: true,
+    },
   },
 });
 </script>

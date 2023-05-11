@@ -1,5 +1,5 @@
 <template>
-  <div class="post_content">
+  <div class="post_content" v-if="post">
     <img class="post_image" :src="url" alt="image" v-if="url">
     <img class="post_image" src="https://career.astra.co.id/static/media/image_not_available1.94c0c57d.png" alt="image" v-else>
     <h3 class="post_title">{{ post.title ? post.title.trim() : "" }}</h3>
@@ -7,6 +7,7 @@
       {{ post.body ? post.body.trim() : "" }}
     </p>
   </div>
+  <div class="post_content" v-else></div>
 </template>
 
 <script>

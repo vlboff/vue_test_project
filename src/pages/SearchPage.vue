@@ -1,6 +1,6 @@
 <template>
-    <ModalWindow v-model:show="postVisible">
-      <SeparatePost :postID="postID" :posts="searchedPosts"/>
+    <ModalWindow v-model:show="modalShowStore.postVisible">
+      <SeparatePost :posts="postsStore.searchedPosts"/>
     </ModalWindow>
     <h1>SEARCH POSTS:</h1>
     <div class="search-block">
@@ -9,15 +9,23 @@
       </label>
       <input type="button" value="Submit" @click="submitInput" />
     </div>
-    <PostsList :posts="searchedPosts" :setPostID="setPostID"/>
+    <div class="posts" v-if="postsStore.searchedPosts.length > 0">
+      <PostsList :posts="postsStore.searchedPosts"/>
+    </div>
+    <div class="loading" v-else>
+      <h2>No results.</h2>
+    </div>
 </template>
 
 <script>
 import { defineComponent } from "vue";
-import getSearchedPosts from "@/API/getSearchedPosts";
+
 import PostsList from "@/components/PostsList.vue";
 import ModalWindow from "@/components/ModalWindow.vue";
 import SeparatePost from "@/components/SeparatePost.vue";
+
+import usePostsStore from "@/stores/PostsStore";
+import useModalShowStore from "@/stores/ModalShowStore";
 
 export default defineComponent({
   components: {
@@ -25,13 +33,20 @@ export default defineComponent({
     ModalWindow,
     SeparatePost,
   },
+  setup() {
+    const postsStore = usePostsStore();
+    const getSearchedPosts = (query) => postsStore.getSearchedPosts(query);
+
+    const modalShowStore = useModalShowStore();
+
+    return {
+      postsStore, modalShowStore, getSearchedPosts,
+    };
+  },
   data() {
     return {
       inputValue: "",
       searchValue: "",
-      searchedPosts: [],
-      postVisible: false,
-      postID: null,
     };
   },
   methods: {
@@ -39,14 +54,10 @@ export default defineComponent({
       this.searchValue = this.inputValue;
       this.inputValue = "";
     },
-    setPostID(id) {
-      this.postVisible = true;
-      this.postID = id;
-    },
   },
   watch: {
-    async searchValue(newValue) {
-      this.searchedPosts = await getSearchedPosts(newValue);
+    searchValue(newValue) {
+      this.getSearchedPosts(newValue);
     },
   },
 
