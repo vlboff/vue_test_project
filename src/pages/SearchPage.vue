@@ -17,51 +17,31 @@
     </div>
 </template>
 
-<script>
-import { defineComponent } from "vue";
-
+<script setup lang="ts">
+import { ref, watch } from "vue";
 import PostsList from "@/components/PostsList.vue";
 import ModalWindow from "@/components/ModalWindow.vue";
 import SeparatePost from "@/components/SeparatePost.vue";
-
 import usePostsStore from "@/stores/PostsStore";
 import useModalShowStore from "@/stores/ModalShowStore";
 
-export default defineComponent({
-  components: {
-    PostsList,
-    ModalWindow,
-    SeparatePost,
-  },
-  setup() {
-    const postsStore = usePostsStore();
-    const getSearchedPosts = (query) => postsStore.getSearchedPosts(query);
+const modalShowStore = useModalShowStore();
+const postsStore = usePostsStore();
+const getSearchedPosts = (query: string) => postsStore.getSearchedPosts(query);
 
-    const modalShowStore = useModalShowStore();
+const inputValue = ref("");
+const searchValue = ref("");
 
-    return {
-      postsStore, modalShowStore, getSearchedPosts,
-    };
-  },
-  data() {
-    return {
-      inputValue: "",
-      searchValue: "",
-    };
-  },
-  methods: {
-    submitInput() {
-      this.searchValue = this.inputValue;
-      this.inputValue = "";
-    },
-  },
-  watch: {
-    searchValue(newValue) {
-      this.getSearchedPosts(newValue);
-    },
-  },
+const submitInput = () => {
+  searchValue.value = inputValue.value;
+  inputValue.value = "";
+};
 
-});
+const getSearchValue = (newValue: string) => {
+  getSearchedPosts(newValue);
+};
+
+watch(searchValue, getSearchValue);
 </script>
 
 <style>
@@ -69,5 +49,4 @@ export default defineComponent({
   display: flex;
   gap: 20px;
 }
-
 </style>

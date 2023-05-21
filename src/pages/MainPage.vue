@@ -1,6 +1,6 @@
 <template>
     <ModalWindow v-model:show="modalShowStore.modelVisible">
-      <PostForm @create="createPost"/>
+      <PostForm />
     </ModalWindow>
     <ModalWindow v-model:show="modalShowStore.postVisible">
       <SeparatePost :posts="postsStore.posts"/>
@@ -15,8 +15,7 @@
     <button @click="showModal">Creare post</button>
 </template>
 
-<script>
-import { defineComponent } from "vue";
+<script setup lang="ts">
 import PostForm from "@/components/PostForm.vue";
 import PostsList from "@/components/PostsList.vue";
 import SeparatePost from "@/components/SeparatePost.vue";
@@ -24,38 +23,15 @@ import ModalWindow from "@/components/ModalWindow.vue";
 
 import usePostsStore from "@/stores/PostsStore";
 import useModalShowStore from "@/stores/ModalShowStore";
-import usePostIDStore from "@/stores/PostIDStore";
 
-export default defineComponent({
-  components: {
-    ModalWindow,
-    PostForm,
-    PostsList,
-    SeparatePost,
-  },
-  setup() {
-    const postsStore = usePostsStore();
+const postsStore = usePostsStore();
 
-    if (!postsStore.loaded) {
-      postsStore.getPosts();
-      postsStore.loaded = true;
-    }
+if (!postsStore.loaded) {
+  postsStore.getPosts();
+  postsStore.loaded = true;
+}
 
-    const createPost = () => postsStore.createPost();
+const modalShowStore = useModalShowStore();
+const showModal = () => modalShowStore.showModal();
 
-    const modalShowStore = useModalShowStore();
-    const showModal = () => modalShowStore.showModal();
-
-    const postIDStore = usePostIDStore();
-    const setPostID = () => postIDStore.setPostID();
-
-    return {
-      postsStore, modalShowStore, showModal, postIDStore, setPostID, createPost,
-    };
-  },
-});
 </script>
-
-<style>
-
-</style>

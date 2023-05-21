@@ -32,39 +32,30 @@
     </div>
 </template>
 
-<script>
-import { defineComponent } from "vue";
+<script setup lang="ts">
+import { ref, computed } from "vue";
 import usePostsStore from "@/stores/PostsStore";
+import { IPost } from "@/types";
 
-export default defineComponent({
-  setup() {
-    const postsStore = usePostsStore();
-    const createPost = (post) => postsStore.createPost(post);
+const postsStore = usePostsStore();
+const createPost = (post: IPost) => postsStore.createPost(post);
 
-    return { createPost };
-  },
-  data() {
-    return {
-      post: {
-        id: null,
-        url: "",
-        title: "",
-        body: "",
-      },
-    };
-  },
-  computed: {
-    isValidForm() {
-      return this.post.title && this.post.body;
-    },
-  },
-  methods: {
-    uploadFile(event) {
-      const file = event.target.files[0];
-      this.post.url = URL.createObjectURL(file);
-    },
-  },
+const post = ref({
+  id: "",
+  url: "",
+  title: "",
+  body: "",
 });
+
+const isValidForm = computed(() => post.value.title && post.value.body);
+
+const uploadFile = (event: Event) => {
+  const fileInput = event.target as HTMLInputElement;
+  if (fileInput && fileInput.files && fileInput.files.length > 0) {
+    const file = fileInput.files[0];
+    post.value.url = URL.createObjectURL(file);
+  }
+};
 </script>
 
 <style>

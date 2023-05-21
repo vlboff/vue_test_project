@@ -8,22 +8,21 @@
   </div>
 </template>
 
-<script>
-import { defineComponent } from "vue";
+<script setup lang="ts">
+import { defineEmits, defineProps } from "vue";
 
-export default defineComponent({
-  props: {
-    show: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  methods: {
-    hideModal() {
-      this.$emit("update:show", false);
-    },
+defineProps({
+  show: {
+    type: Boolean,
+    default: false,
   },
 });
+
+const emit = defineEmits(["update:show"]);
+
+const hideModal = () => {
+  emit("update:show", false);
+};
 </script>
 
 <style scoped>

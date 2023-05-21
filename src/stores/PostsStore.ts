@@ -4,8 +4,8 @@ import getSearchedPosts from "@/API/getSearchedPosts";
 import useModalShowStore from "./ModalShowStore";
 
 interface IPost {
-  id: number | null;
-  url: string;
+  id: string | number;
+  url?: string;
   title: string;
   body: string;
 }
@@ -20,7 +20,7 @@ interface IState {
 const usePostsStore = defineStore("posts", {
   state: (): IState => ({
     post: {
-      id: null,
+      id: "",
       url: "",
       title: "",
       body: "",
@@ -47,7 +47,7 @@ const usePostsStore = defineStore("posts", {
       const modalShowStore = useModalShowStore();
       modalShowStore.modelVisible = false;
       this.post = {
-        id: null,
+        id: "",
         url: "",
         title: "",
         body: "",

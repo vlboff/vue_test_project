@@ -2,15 +2,15 @@ import { defineStore } from "pinia";
 import useModalShowStore from "./ModalShowStore";
 
 interface IState {
-  postID: number | null;
+  postID: number;
 }
 
 const usePostIDStore = defineStore("id", {
   state: (): IState => ({
-    postID: null,
+    postID: 0,
   }),
   actions: {
-    setPostID(id: number | null) {
+    setPostID(id: number) {
       const modalShowStore = useModalShowStore();
       modalShowStore.postVisible = true;
       this.postID = id;

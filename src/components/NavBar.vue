@@ -7,14 +7,6 @@
   </nav>
 </template>
 
-<script>
-import { defineComponent } from "vue";
-
-export default defineComponent({
-
-});
-</script>
-
 <style scoped>
   .nav-list {
     display: flex;
@@ -31,5 +23,4 @@ export default defineComponent({
   .router-link-active {
     color: var(--main_red);
   }
-
 </style>

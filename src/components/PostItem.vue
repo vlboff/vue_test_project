@@ -6,28 +6,21 @@
     </div>
 </template>
 
-<script>
-import { defineComponent } from "vue";
+<script setup lang="ts">
+import { defineProps, PropType } from "vue";
 import PostContent from "@/components/PostContent.vue";
 import usePostIDStore from "@/stores/PostIDStore";
+import { IPost } from "@/types";
 
-export default defineComponent({
-  components: {
-    PostContent,
-  },
-  setup() {
-    const postIDStore = usePostIDStore();
-    const setPostID = (id) => postIDStore.setPostID(id);
-
-    return { setPostID };
-  },
-  props: {
-    post: {
-      type: Object,
-      required: true,
-    },
+defineProps({
+  post: {
+    type: Object as PropType<IPost>,
+    required: true,
   },
 });
+
+const postIDStore = usePostIDStore();
+const setPostID = (id: number) => postIDStore.setPostID(id);
 </script>
 
 <style>

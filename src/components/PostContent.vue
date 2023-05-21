@@ -10,25 +10,26 @@
   <div class="post_content" v-else></div>
 </template>
 
-<script>
-import { defineComponent } from "vue";
+<script setup lang="ts">
+import {
+  ref, defineProps, onMounted, PropType,
+} from "vue";
 import getImage from "@/API/getImage";
+import { IPost } from "@/types";
 
-export default defineComponent({
-  data() {
-    return {
-      url: "",
-    };
+const props = defineProps({
+  post: {
+    type: Object as PropType<IPost>,
+    required: true,
   },
-  props: {
-    post: {
-      type: Object,
-      required: true,
-    },
-  },
-  async mounted() {
-    this.url = await getImage(this.post.id);
-  },
+});
+
+const url = ref(props.post.url);
+
+onMounted(async () => {
+  if (!url.value) {
+    url.value = await getImage(props.post.id);
+  }
 });
 </script>
 

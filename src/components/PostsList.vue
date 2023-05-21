@@ -8,19 +8,15 @@
   </div>
 </template>
 
-<script>
-import { defineComponent } from "vue";
+<script setup lang="ts">
+import { defineProps, PropType } from "vue";
 import PostItem from "@/components/PostItem.vue";
+import { IPost } from "@/types";
 
-export default defineComponent({
-  components: {
-    PostItem,
-  },
-  props: {
-    posts: {
-      type: Array,
-      required: true,
-    },
+defineProps({
+  posts: {
+    type: Array as PropType<IPost[]>,
+    required: true,
   },
 });
 </script>

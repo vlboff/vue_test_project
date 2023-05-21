@@ -13,26 +13,21 @@
   </div>
 </template>
 
-<script>
-import { defineComponent } from "vue";
+<script setup lang="ts">
+import { ref, onMounted, defineProps } from "vue";
 import getImage from "@/API/getImage";
 
-export default defineComponent({
-  data() {
-    return {
-      avatar: "",
-    };
+const props = defineProps({
+  comment: {
+    type: Object,
+    required: true,
   },
-  props: {
-    comment: {
-      type: Object,
-      required: true,
-    },
-  },
-  async mounted() {
-    const avatar = await getImage(this.comment.user.id);
-    this.avatar = avatar;
-  },
+});
+
+const avatar = ref("");
+
+onMounted(async () => {
+  avatar.value = await getImage(props.comment.user.id);
 });
 </script>
 

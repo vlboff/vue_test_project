@@ -12,49 +12,38 @@
   </div>
 </template>
 
-<script>
-import { defineComponent } from "vue";
+<script setup lang="ts">
+import {
+  defineProps, onBeforeMount, onMounted, PropType, ref,
+} from "vue";
 import getComments from "@/API/getComments";
 import PostContent from "@/components/PostContent.vue";
 import CommentItem from "@/components/CommentItem.vue";
-import usePostsStore from "@/stores/PostsStore";
 import usePostIDStore from "@/stores/PostIDStore";
+import { IPost } from "@/types";
 
-export default defineComponent({
-  components: {
-    PostContent,
-    CommentItem,
+const props = defineProps({
+  posts: {
+    type: Array as PropType<IPost[]>,
+    required: true,
   },
-  setup() {
-    const postsStore = usePostsStore();
-    const postIDStore = usePostIDStore();
-    return {
-      postsStore, postIDStore,
-    };
-  },
-  data() {
-    return {
-      post: {},
-      comments: [],
-    };
-  },
-  props: {
-    posts: {
-      type: Array,
-      required: true,
-    },
-  },
-  beforeMount() {
-    const getPostByID = (id, posts) => {
-      const post = posts.find((item) => item.id === id);
-      return post;
-    };
-    this.post = getPostByID(this.postIDStore.postID, this.posts);
-  },
-  async mounted() {
-    const comments = await getComments(this.postIDStore.postID);
-    this.comments = comments;
-  },
+});
+
+const postIDStore = usePostIDStore();
+
+const post = ref<IPost | undefined | null>(null);
+const comments = ref([]);
+
+onBeforeMount(() => {
+  const getPostByID = (id: number | string, posts: IPost[]) => {
+    const postByID = posts.find((item) => item.id === id);
+    return postByID;
+  };
+  post.value = getPostByID(postIDStore.postID, props.posts);
+});
+onMounted(async () => {
+  const postComments = await getComments(postIDStore.postID);
+  comments.value = postComments;
 });
 </script>
 
